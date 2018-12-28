@@ -25,11 +25,11 @@ class RoomList extends Component {
       <section className="room-list">
         {
           this.state.rooms.map((room) =>
-            <li className="room-list-item" key={room.key}>
-              <h3 className="room-title">
-                {room.name}
-              </h3>
-            </li>
+            <ul class="nav nav-pills pull-left">
+              <li class="nav-item">
+                <a class="nav-link" href="#" key={room.key}>{room.name}</a>
+              </li>
+            </ul>
           )
         }
       </section>
@@ -38,3 +38,4 @@ class RoomList extends Component {
 }
 
 export default RoomList;
+
