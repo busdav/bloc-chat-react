@@ -29,7 +29,9 @@ class App extends Component {
           </nav>
           <h1>Bloc Chat</h1>
         </header>
+        
         <main>
+          
           <Route exact path="/" component={Landing} />
           <Route
             path='/roomlist'

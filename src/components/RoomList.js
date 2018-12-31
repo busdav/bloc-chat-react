@@ -6,7 +6,8 @@ class RoomList extends Component {
     super(props);
 
     this.state = {
-      rooms: []
+      rooms: [],
+      name: "",
     }
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
@@ -20,7 +21,43 @@ class RoomList extends Component {
     });
   }
 
+  handleChange(e) {
+    // e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value,
+      // creator: this.props.user
+    });
+  }
+
+  validateRoomName(str) {
+    const roomName = str || this.state.name;
+    const roomLength = roomName.trim().length;
+    if (roomLength > 0 ) { return true; }
+    else { return false; }
+  }
+
+  createRoom(e) {
+    // e.preventDefault();
+    if (this.validateRoomName()) {
+      this.roomsRef.push({ name: this.state.name });
+      this.setState({ name: "" });
+    }
+  }
+
+
   render() {
+
+    const roomForm = (
+      <form onSubmit={this.createRoom}>
+        <div className="form-group">
+          <label for="name">Room name</label>
+          <input type="text" className="form-control" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleChange} />
+        </div>
+        <button type="submit" className="btn btn-primary">Create</button>
+      </form>
+    );
+
+
     return (
       <section className="room-list">
         {
