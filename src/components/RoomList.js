@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import MessageList from './MessageList';
 
 class RoomList extends Component {
 
@@ -77,6 +78,9 @@ class RoomList extends Component {
             )
           }
         </section>
+        <MessageList
+          firebase={this.props.firebase}
+        />
       </div>
     );
   }
