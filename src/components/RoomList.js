@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class RoomList extends Component {
 
@@ -70,7 +71,7 @@ class RoomList extends Component {
             this.state.rooms.map((room) =>
               <ul className="nav nav-pills pull-left">
                 <li className="nav-item">
-                  <a className="nav-link" href="#" key={room.key}>{room.name}</a>
+                  <Link to='#' key={room.key}>{room.name}</Link>
                 </li>
               </ul>
             )
