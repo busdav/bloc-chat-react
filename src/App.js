@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
-import MessageList from './components/MessageList';
+// import MessageList from './components/MessageList';
 import Landing from './components/Landing';
 import { Route, Link } from 'react-router-dom';
 
@@ -26,16 +26,27 @@ class App extends Component {
       activeRoom: "",
     }
 
-    this.handleChange = this.handleChange.bind(this);
+    this.setActiveRoom = this.setActiveRoom.bind(this);
+    this.handleActiveRoomChange = this.handleActiveRoomChange.bind(this);
   }
 
-  handleChange(e) {
+  setActiveRoom(room) {
+    this.setState({ activeRoom: room });
+    console.log(this.state.activeRoom);
+    // const userRef = firebase.database().ref("presence/" + this.state.user.uid);
+    // const roomKey = room === "" ? "" : room.key;
+    // const roomTitle = room === "" ? "" : room.title;
+    // userRef.update({currentRoom: roomKey, roomName: roomTitle});
+  }
+
+  handleActiveRoomChange(e) {
     const newActiveRoom = e.target.value;
-    this.setState({ activeRoom: newActiveRoom });
+    this.setActiveRoom(newActiveRoom);
+    // this.setState({ activeRoom: newActiveRoom });
   }
 
   render() {
-    let messageList;
+    // let messageList;
 
     return (
       <div className="App">
@@ -89,7 +100,11 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route
             path='/roomlist'
-            render={(props) => <RoomList {...props} firebase={firebase} />}
+            render={(props) => <RoomList {...props} 
+              firebase={firebase} 
+              activeRoom={this.activeRoom}
+              handleActiveRoomChange={this.handleActiveRoomChange}
+              />}
           />
         </main>
       </div>

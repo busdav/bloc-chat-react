@@ -26,7 +26,7 @@ class RoomList extends Component {
   }
 
   handleChange(e) {
-    // e.preventDefault();
+    e.preventDefault();
     const newName = e.target.value;
     this.setState({ name: newName });
     // this.setState({
@@ -43,7 +43,7 @@ class RoomList extends Component {
   }
 
   createRoom(e) {
-    // e.preventDefault();
+    e.preventDefault();
     if (this.validateRoomName()) {
       this.roomsRef.push({ name: this.state.name });
       this.setState({ name: "" });
@@ -70,9 +70,9 @@ class RoomList extends Component {
         <section className="room-list">
           {
             this.state.rooms.map((room) =>
-              <ul className="nav nav-pills pull-left">
+              <ul className="nav nav-pills pull-left"  key={room.key}>
                 <li className="nav-item">
-                  <Link to='#' key={room.key}>{room.name}</Link>
+                  <Link to='#' onClick={this.props.handleActiveRoomChange}>{room.name}</Link>
                 </li>
               </ul>
             )
@@ -80,6 +80,7 @@ class RoomList extends Component {
         </section>
         <MessageList
           firebase={this.props.firebase}
+          activeRoom={this.props.activeRoom}
         />
       </div>
     );

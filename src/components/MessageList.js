@@ -9,17 +9,52 @@ class MessageList extends Component {
       messages: [],
     }
 
-    this.messagesRef = this.props.firebase.database().ref('rooms');
+    this.messagesRef = this.props.firebase.database().ref('messages/' + this.props.activeRoom);
+  
     // this.handleChange = this.handleChange.bind(this);
   }
 
   // componentDidMount() {
-  //   this.roomsRef.on('child_added', snapshot => {
-  //     const room = snapshot.val();
-  //     room.key = snapshot.key;
-  //     this.setState({ rooms: this.state.rooms.concat( room ) });
+  //   this.messagesRef.on('value', snapshot => {
+  //     const messageChanges = [];
+  //     snapshot.forEach((message) => {
+  //         messageChanges.push({
+  //           key: message.key,
+  //           username: message.val().username,
+  //           content: message.val().content,
+  //           sentAt: message.val().sentAt,
+  //           updatedTime : message.val().updatedTime
+  //         });
+  //     });
+  //     this.setState({ messages: messageChanges});
+  //     this.latestMessage.scrollIntoView();
   //   });
-  // }
+  
+  componentDidMount() {
+    this.messagesRef.on('child_added', snapshot => {
+      const message = snapshot.val();
+      message.key = snapshot.key;
+      message.username = snapshot.username;
+      message.content = snapshot.content;
+      message.sentAt = snapshot.sentAt;
+      this.setState({ messages: this.state.messages.concat( message ) });
+
+    // this.messagesRef.on('value', snapshot => {
+    //   const messageChanges = [];
+    //   snapshot.forEach((message) => {
+    //       messageChanges.push({
+    //         key: message.key,
+    //         username: message.val().username,
+    //         content: message.val().content,
+    //         sentAt: message.val().sentAt,
+    //         updatedTime : message.val().updatedTime
+    //       });
+    //   });
+    //   this.setState({ messages: messageChanges});
+    //   // this.latestMessage.scrollIntoView();
+    
+    });
+  }
 
   // handleChange(e) {
   //   // e.preventDefault();
@@ -34,9 +69,25 @@ class MessageList extends Component {
 
   render() {
 
+    const messageList = (
+      <section className="messages-list">
+      {
+        this.state.messages.map((message) =>
+          <ul key={message.key}>
+            <li className="message">
+              {message.content}
+            </li>
+          </ul>
+        )
+      }
+      </section>
+    );  
+
+
     return (
-      <div className="message-list">
-        Message List here. Should display all messages associated with activeRoom. 
+
+      <div className="message-column">
+          {messageList}
       </div>
     );
   }
