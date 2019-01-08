@@ -103,7 +103,7 @@ class App extends Component {
             render={(props) => <RoomList {...props} 
               firebase={firebase} 
               activeRoom={this.activeRoom}
-              handleActiveRoomChange={this.handleActiveRoomChange}
+              handleActiveRoomChange={(e) => this.handleActiveRoomChange(e)}
               />}
           />
         </main>
