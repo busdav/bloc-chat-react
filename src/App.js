@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
-// import MessageList from './components/MessageList';
+import MessageList from './components/MessageList';
 import Landing from './components/Landing';
 import { Route, Link } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      activeRoom: "",
+      activeRoom: null,
     }
 
     this.setActiveRoom = this.setActiveRoom.bind(this);
@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   handleActiveRoomChange(e) {
+    console.log(e.target.value);
     const newActiveRoom = e.target.value;
     this.setActiveRoom(newActiveRoom);
     // this.setState({ activeRoom: newActiveRoom });
@@ -102,8 +103,15 @@ class App extends Component {
             path='/roomlist'
             render={(props) => <RoomList {...props} 
               firebase={firebase} 
-              activeRoom={this.activeRoom}
+              activeRoom={this.state.activeRoom}
               handleActiveRoomChange={(e) => this.handleActiveRoomChange(e)}
+              />}
+          />
+          <Route
+            path='/roomlist'
+            render={(props) => <MessageList {...props} 
+              firebase={firebase} 
+              activeRoom={this.state.activeRoom}
               />}
           />
         </main>

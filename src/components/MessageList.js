@@ -6,29 +6,13 @@ class MessageList extends Component {
     super(props);
 
     this.state = {
-      messages: [],
+      allMessages: [],
+      displayedMessages: [],
+      newMessageText: ''
     }
 
-    this.messagesRef = this.props.firebase.database().ref('messages/' + this.props.activeRoom);
-  
-    // this.handleChange = this.handleChange.bind(this);
+    this.messagesRef = this.props.firebase.database().ref('messages');
   }
-
-  // componentDidMount() {
-  //   this.messagesRef.on('value', snapshot => {
-  //     const messageChanges = [];
-  //     snapshot.forEach((message) => {
-  //         messageChanges.push({
-  //           key: message.key,
-  //           username: message.val().username,
-  //           content: message.val().content,
-  //           sentAt: message.val().sentAt,
-  //           updatedTime : message.val().updatedTime
-  //         });
-  //     });
-  //     this.setState({ messages: messageChanges});
-  //     this.latestMessage.scrollIntoView();
-  //   });
   
   componentDidMount() {
     this.messagesRef.on('child_added', snapshot => {
@@ -37,58 +21,35 @@ class MessageList extends Component {
       message.username = snapshot.username;
       message.content = snapshot.content;
       message.sentAt = snapshot.sentAt;
-      this.setState({ messages: this.state.messages.concat( message ) });
-
-    // this.messagesRef.on('value', snapshot => {
-    //   const messageChanges = [];
-    //   snapshot.forEach((message) => {
-    //       messageChanges.push({
-    //         key: message.key,
-    //         username: message.val().username,
-    //         content: message.val().content,
-    //         sentAt: message.val().sentAt,
-    //         updatedTime : message.val().updatedTime
-    //       });
-    //   });
-    //   this.setState({ messages: messageChanges});
-    //   // this.latestMessage.scrollIntoView();
-    
+      // this.setState({ allMessages: this.state.allMessages.concat( message ) }, () => {
+      //   this.showMessages( this.props.activeRoom )
+      // });
+      this.setState({ allMessages: this.state.allMessages.concat( message ) });
     });
   }
 
-  // handleChange(e) {
-  //   // e.preventDefault();
-  //   const newName = e.target.value;
-  //   this.setState({ name: newName });
-  //   // this.setState({
-  //   //   [e.target.name]: e.target.value,
-  //   //   creator: this.props.user
-  //   // });
+  // showMessages(activeRoom) {
+  //   this.setState({ displayedMessages: this.state.allMessages.filter( message => message.roomId === activeRoom.key ) });
   // }
-
 
   render() {
 
-    const messageList = (
-      <section className="messages-list">
-      {
-        this.state.messages.map((message) =>
-          <ul key={message.key}>
-            <li className="message">
-              {message.content}
-            </li>
-          </ul>
-        )
-      }
-      </section>
-    );  
-
-
     return (
-
-      <div className="message-column">
-          {messageList}
-      </div>
+      <main id="messages-component">
+        <h2 className="room-name">{ this.props.activeRoom ? this.props.activeRoom.name : '' }</h2>
+        <ul id="message-list">
+          {this.state.displayedMessages.map( message => 
+            <li key={message.key}>
+              <div className="username">
+                 { message.username }
+              </div>
+              <div className="content">
+                 { message.content }
+              </div>
+            </li>
+          )}
+        </ul>
+      </main>
     );
   }
 }

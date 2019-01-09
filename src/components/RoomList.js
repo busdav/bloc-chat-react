@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import MessageList from './MessageList';
 
 class RoomList extends Component {
 
@@ -13,7 +12,7 @@ class RoomList extends Component {
     }
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.createRoom = this.createRoom.bind(this);
   }
 
@@ -22,10 +21,11 @@ class RoomList extends Component {
       const room = snapshot.val();
       room.key = snapshot.key;
       this.setState({ rooms: this.state.rooms.concat( room ) });
+      // if (this.state.rooms.length === 1) { this.props.setActiveRoom(room) }
     });
   }
 
-  handleChange(e) {
+  handleNameChange(e) {
     e.preventDefault();
     const newName = e.target.value;
     this.setState({ name: newName });
@@ -42,8 +42,8 @@ class RoomList extends Component {
     else { return false; }
   }
 
-  createRoom(e) {
-    e.preventDefault();
+  createRoom(newRoomName) {
+    newRoomName.preventDefault();
     if (this.validateRoomName()) {
       this.roomsRef.push({ name: this.state.name });
       this.setState({ name: "" });
@@ -56,7 +56,7 @@ class RoomList extends Component {
     const roomForm = (
       <form className="form-inline my-2 my-lg-0" onSubmit={this.createRoom}>
         <div className="form-group">
-          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleChange} />
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleNameChange} />
         </div>
         <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Create</button>
       </form>
@@ -71,17 +71,13 @@ class RoomList extends Component {
           {
             this.state.rooms.map((room) =>
               <ul className="nav nav-pills pull-left"  key={room.key}>
-                <li className="nav-item">
-                  <Link to='#' onClick={this.props.handleActiveRoomChange}>{room.name}</Link>
+                <li className="nav-item" onClick={this.props.handleActiveRoomChange}>
+                  <Link to='#'>{room.name}</Link>
                 </li>
               </ul>
             )
           }
         </section>
-        <MessageList
-          firebase={this.props.firebase}
-          activeRoom={this.props.activeRoom}
-        />
       </div>
     );
   }
