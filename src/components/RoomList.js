@@ -29,10 +29,6 @@ class RoomList extends Component {
     e.preventDefault();
     const newName = e.target.value;
     this.setState({ name: newName });
-    // this.setState({
-    //   [e.target.name]: e.target.value,
-    //   creator: this.props.user
-    // });
   }
 
   validateRoomName(str) {
@@ -58,9 +54,9 @@ class RoomList extends Component {
   render() {
 
     const roomForm = (
-      <form className="form-inline my-2 my-lg-0" onSubmit={(e) => this.handleSubmit(e)}>
+      <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={ (e) => this.handleNameChange(e) } />
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleNameChange} />
         </div>
         <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Create</button>
       </form>

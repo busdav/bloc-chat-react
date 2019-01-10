@@ -26,28 +26,23 @@ class App extends Component {
       activeRoom: null,
     }
 
-    // this.setActiveRoom = this.setActiveRoom.bind(this);
     this.handleActiveRoomChange = this.handleActiveRoomChange.bind(this);
+    // this.setActiveRoom = this.setActiveRoom.bind(this);
   }
 
   setActiveRoom(room) {
     this.setState({ activeRoom: room });
     console.log(this.state.activeRoom);
-    // const userRef = firebase.database().ref("presence/" + this.state.user.uid);
-    // const roomKey = room === "" ? "" : room.key;
-    // const roomTitle = room === "" ? "" : room.title;
-    // userRef.update({currentRoom: roomKey, roomName: roomTitle});
   }
 
   handleActiveRoomChange(e) {
     e.preventDefault();
     const newActiveRoom = e.target.value;
-    this.setActiveRoom(newActiveRoom);
     console.log(e.target.value);
+    this.setActiveRoom(newActiveRoom);
   }
 
   render() {
-    // let messageList;
 
     return (
       <div className="App">
