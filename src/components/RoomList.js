@@ -13,7 +13,7 @@ class RoomList extends Component {
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
     this.handleNameChange = this.handleNameChange.bind(this);
-    this.createRoom = this.createRoom.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -21,7 +21,7 @@ class RoomList extends Component {
       const room = snapshot.val();
       room.key = snapshot.key;
       this.setState({ rooms: this.state.rooms.concat( room ) });
-      // if (this.state.rooms.length === 1) { this.props.setActiveRoom(room) }
+      if (this.state.rooms.length === 1) { this.props.setActiveRoom(room) }
     });
   }
 
@@ -38,25 +38,29 @@ class RoomList extends Component {
   validateRoomName(str) {
     const roomName = str || this.state.name;
     const roomLength = roomName.trim().length;
-    if (roomLength > 0 ) { return true; }
+    if (roomLength > 1 ) { return true; }
     else { return false; }
   }
 
   createRoom(newRoomName) {
-    newRoomName.preventDefault();
-    if (this.validateRoomName()) {
+    if (this.validateRoomName(newRoomName)) {
       this.roomsRef.push({ name: this.state.name });
       this.setState({ name: "" });
     }
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    this.createRoom(this.state.name);
+ }
+
 
   render() {
 
     const roomForm = (
-      <form className="form-inline my-2 my-lg-0" onSubmit={this.createRoom}>
+      <form className="form-inline my-2 my-lg-0" onSubmit={(e) => this.handleSubmit(e)}>
         <div className="form-group">
-          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleNameChange} />
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={ (e) => this.handleNameChange(e) } />
         </div>
         <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Create</button>
       </form>

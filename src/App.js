@@ -26,7 +26,7 @@ class App extends Component {
       activeRoom: null,
     }
 
-    this.setActiveRoom = this.setActiveRoom.bind(this);
+    // this.setActiveRoom = this.setActiveRoom.bind(this);
     this.handleActiveRoomChange = this.handleActiveRoomChange.bind(this);
   }
 
@@ -40,10 +40,10 @@ class App extends Component {
   }
 
   handleActiveRoomChange(e) {
-    console.log(e.target.value);
+    e.preventDefault();
     const newActiveRoom = e.target.value;
     this.setActiveRoom(newActiveRoom);
-    // this.setState({ activeRoom: newActiveRoom });
+    console.log(e.target.value);
   }
 
   render() {
@@ -105,6 +105,7 @@ class App extends Component {
               firebase={firebase} 
               activeRoom={this.state.activeRoom}
               handleActiveRoomChange={(e) => this.handleActiveRoomChange(e)}
+              setActiveRoom={(room) => this.setActiveRoom(room)}
               />}
           />
           <Route

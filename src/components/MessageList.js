@@ -21,16 +21,16 @@ class MessageList extends Component {
       message.username = snapshot.username;
       message.content = snapshot.content;
       message.sentAt = snapshot.sentAt;
-      // this.setState({ allMessages: this.state.allMessages.concat( message ) }, () => {
-      //   this.showMessages( this.props.activeRoom )
-      // });
+      this.setState({ allMessages: this.state.allMessages.concat( message ) }, () => {
+        this.showMessages( this.props.activeRoom )
+      });
       this.setState({ allMessages: this.state.allMessages.concat( message ) });
     });
   }
 
-  // showMessages(activeRoom) {
-  //   this.setState({ displayedMessages: this.state.allMessages.filter( message => message.roomId === activeRoom.key ) });
-  // }
+  showMessages(activeRoom) {
+    this.setState({ displayedMessages: this.state.allMessages.filter( message => message.roomId === activeRoom.key ) });
+  }
 
   render() {
 
