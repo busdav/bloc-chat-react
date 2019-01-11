@@ -12,8 +12,6 @@ class RoomList extends Component {
     }
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -54,9 +52,9 @@ class RoomList extends Component {
   render() {
 
     const roomForm = (
-      <form className="form-inline my-2 my-lg-0" onSubmit={this.handleSubmit}>
+      <form className="form-inline my-2 my-lg-0" onSubmit={(e) => this.handleSubmit(e)}>
         <div className="form-group">
-          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleNameChange} />
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={(e) => this.handleNameChange(e)} />
         </div>
         <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Create</button>
       </form>
@@ -71,7 +69,7 @@ class RoomList extends Component {
           {
             this.state.rooms.map((room) =>
               <ul className="nav nav-pills pull-left"  key={room.key}>
-                <li className="nav-item" onClick={this.props.handleActiveRoomChange}>
+                <li className="nav-item" onClick={() => this.props.setActiveRoom(room) }>
                   <Link to='#'>{room.name}</Link>
                 </li>
               </ul>

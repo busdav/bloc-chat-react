@@ -25,21 +25,11 @@ class App extends Component {
     this.state = {
       activeRoom: null,
     }
-
-    this.handleActiveRoomChange = this.handleActiveRoomChange.bind(this);
-    // this.setActiveRoom = this.setActiveRoom.bind(this);
   }
 
   setActiveRoom(room) {
     this.setState({ activeRoom: room });
     console.log(this.state.activeRoom);
-  }
-
-  handleActiveRoomChange(e) {
-    e.preventDefault();
-    const newActiveRoom = e.target.value;
-    console.log(e.target.value);
-    this.setActiveRoom(newActiveRoom);
   }
 
   render() {
@@ -99,8 +89,7 @@ class App extends Component {
             render={(props) => <RoomList {...props} 
               firebase={firebase} 
               activeRoom={this.state.activeRoom}
-              handleActiveRoomChange={(e) => this.handleActiveRoomChange(e)}
-              setActiveRoom={(room) => this.setActiveRoom(room)}
+              setActiveRoom={(room) => this.setActiveRoom(room)} 
               />}
           />
           <Route

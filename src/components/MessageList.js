@@ -24,7 +24,6 @@ class MessageList extends Component {
       this.setState({ allMessages: this.state.allMessages.concat( message ) }, () => {
         this.showMessages( this.props.activeRoom )
       });
-      this.setState({ allMessages: this.state.allMessages.concat( message ) });
     });
   }
 
