@@ -12,8 +12,6 @@ class RoomList extends Component {
     }
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
-    this.handleChange = this.handleChange.bind(this);
-    this.createRoom = this.createRoom.bind(this);
   }
 
   componentDidMount() {
@@ -21,41 +19,42 @@ class RoomList extends Component {
       const room = snapshot.val();
       room.key = snapshot.key;
       this.setState({ rooms: this.state.rooms.concat( room ) });
+      if (this.state.rooms.length === 1) { this.props.setActiveRoom(room) }
     });
   }
 
-  handleChange(e) {
+  handleNameChange(e) {
     e.preventDefault();
     const newName = e.target.value;
     this.setState({ name: newName });
-    // this.setState({
-    //   [e.target.name]: e.target.value,
-    //   creator: this.props.user
-    // });
   }
 
   validateRoomName(str) {
     const roomName = str || this.state.name;
     const roomLength = roomName.trim().length;
-    if (roomLength > 0 ) { return true; }
+    if (roomLength > 1 ) { return true; }
     else { return false; }
   }
 
-  createRoom(e) {
-    e.preventDefault();
-    if (this.validateRoomName()) {
+  createRoom(newRoomName) {
+    if (this.validateRoomName(newRoomName)) {
       this.roomsRef.push({ name: this.state.name });
       this.setState({ name: "" });
     }
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    this.createRoom(this.state.name);
+ }
+
 
   render() {
 
     const roomForm = (
-      <form className="form-inline my-2 my-lg-0" onSubmit={this.createRoom}>
+      <form className="form-inline my-2 my-lg-0" onSubmit={(e) => this.handleSubmit(e)}>
         <div className="form-group">
-          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={this.handleChange} />
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.name} placeholder="New Room" onChange={(e) => this.handleNameChange(e)} />
         </div>
         <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Create</button>
       </form>
@@ -69,8 +68,8 @@ class RoomList extends Component {
         <section className="room-list">
           {
             this.state.rooms.map((room) =>
-              <ul className="nav nav-pills pull-left" key={room.key}>
-                <li className="nav-item">
+              <ul className="nav nav-pills pull-left"  key={room.key}>
+                <li className="nav-item" onClick={() => this.props.setActiveRoom(room) }>
                   <Link to='#'>{room.name}</Link>
                 </li>
               </ul>

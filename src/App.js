@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
+import MessageList from './components/MessageList';
 import Landing from './components/Landing';
 import { Route, Link } from 'react-router-dom';
 
@@ -18,6 +19,18 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeRoom: null,
+    }
+  }
+
+  setActiveRoom(room) {
+    this.setState({ activeRoom: room });
+  }
+
   render() {
 
     return (
@@ -72,7 +85,18 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route
             path='/roomlist'
-            render={(props) => <RoomList {...props} firebase={firebase} />}
+            render={(props) => <RoomList {...props} 
+              firebase={firebase} 
+              activeRoom={this.state.activeRoom}
+              setActiveRoom={(room) => this.setActiveRoom(room)} 
+              />}
+          />
+          <Route
+            path='/roomlist'
+            render={(props) => <MessageList {...props} 
+              firebase={firebase} 
+              activeRoom={this.state.activeRoom}
+              />}
           />
         </main>
       </div>
