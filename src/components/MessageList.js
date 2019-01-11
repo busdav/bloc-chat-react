@@ -8,26 +8,26 @@ class MessageList extends Component {
     this.state = {
       allMessages: [],
       displayedMessages: [],
-      newMessageText: ''
     }
 
     this.messagesRef = this.props.firebase.database().ref('messages');
   }
   
   componentDidMount() {
-    this.messagesRef.on('child_added', snapshot => {
+    this.messagesRef.on('child_added', snapshot  => {
       const message = snapshot.val();
       message.key = snapshot.key;
-      message.username = snapshot.username;
-      message.content = snapshot.content;
-      message.sentAt = snapshot.sentAt;
       this.setState({ allMessages: this.state.allMessages.concat( message ) }, () => {
-        this.showMessages( this.props.activeRoom )
+        this.setDisplayedMessages( this.props.activeRoom )
       });
     });
   }
 
-  showMessages(activeRoom) {
+  componentWillReceiveProps(nextProps) {
+    this.setDisplayedMessages( nextProps.activeRoom ); // note that we're setting the state by calling setDisplayedMessage
+  }
+
+  setDisplayedMessages(activeRoom) {
     this.setState({ displayedMessages: this.state.allMessages.filter( message => message.roomId === activeRoom.key ) });
   }
 
