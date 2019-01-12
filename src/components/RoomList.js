@@ -66,15 +66,15 @@ class RoomList extends Component {
           {roomForm}
         </section>
         <section className="room-list">
-          {
-            this.state.rooms.map((room) =>
-              <ul className="nav nav-pills pull-left"  key={room.key}>
-                <li className="nav-item" onClick={() => this.props.setActiveRoom(room) }>
-                  <Link to='#'>{room.name}</Link>
-                </li>
-              </ul>
-            )
-          }
+          <ul className="nav nav-pills pull-left">
+            {
+              this.state.rooms.map((room) =>
+                  <li className="nav-item"  key={room.key} onClick={() => this.props.setActiveRoom(room) }>
+                    <Link to='#'>{room.name}</Link>
+                  </li>
+              )
+            }
+          </ul>
         </section>
       </div>
     );

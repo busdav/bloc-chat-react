@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
 import Landing from './components/Landing';
+import User from './components/User';
 import { Route, Link } from 'react-router-dom';
 
 
@@ -24,11 +25,16 @@ class App extends Component {
 
     this.state = {
       activeRoom: null,
+      activeUser: null,
     }
   }
 
   setActiveRoom(room) {
     this.setState({ activeRoom: room });
+  }
+
+  setActiveUser(user) {
+    this.setState({ activeUser: user });
   }
 
   render() {
@@ -83,20 +89,28 @@ class App extends Component {
         <main>
           
           <Route exact path="/" component={Landing} />
+          <Route 
+            path="/"
+            render={(props) => <User {...props} 
+              firebase={firebase} 
+              activeUser={this.state.activeUser}
+              setActiveUser={(user) => this.setActiveUser(user)}
+            />}
+          />
           <Route
             path='/roomlist'
             render={(props) => <RoomList {...props} 
               firebase={firebase} 
               activeRoom={this.state.activeRoom}
               setActiveRoom={(room) => this.setActiveRoom(room)} 
-              />}
+            />}
           />
           <Route
             path='/roomlist'
             render={(props) => <MessageList {...props} 
               firebase={firebase} 
               activeRoom={this.state.activeRoom}
-              />}
+            />}
           />
         </main>
       </div>
