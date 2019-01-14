@@ -23,6 +23,11 @@ class MessageList extends Component {
         this.setDisplayedMessages( this.props.activeRoom )
       });
     });
+    this.messagesRef.on('child_removed', snapshot  => {
+      this.setState({ allMessages: this.state.allMessages.filter( message => message.key !== snapshot.key )  }, () => {
+        this.setDisplayedMessages( this.props.activeRoom )
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,6 +68,10 @@ class MessageList extends Component {
     this.createMessage(this.state.content);
  }
 
+ removeMessage(message) {
+  this.messagesRef.child(message.key).remove();
+}
+
   render() {
 
     const messageForm = (
@@ -88,6 +97,9 @@ class MessageList extends Component {
               </div>
               <div className="content">
                  { message.content }
+              </div>
+              <div className="button-delete-message">
+                <button type="button" className="btn btn-danger" onClick={() => this.removeMessage(message)}>Delete message</button>
               </div>
             </li>
           )}
