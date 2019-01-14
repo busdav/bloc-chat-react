@@ -110,6 +110,7 @@ class App extends Component {
             render={(props) => <MessageList {...props} 
               firebase={firebase} 
               activeRoom={this.state.activeRoom}
+              activeUser={this.state.activeUser}
             />}
           />
         </main>

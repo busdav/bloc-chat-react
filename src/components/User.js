@@ -17,7 +17,7 @@ class User extends Component {
   }
 
 
-  handleSignIn(e) {
+  signIn(e) {
     e.preventDefault();
     const provider = new this.props.firebase.auth.GoogleAuthProvider();
     this.props.firebase.auth().signInWithPopup(provider).then((result) => {
@@ -38,7 +38,7 @@ class User extends Component {
     });
   }
 
-  handleSignOut(e) {
+  signOut(e) {
     e.preventDefault();
     this.props.firebase.auth().signOut();
   }
@@ -49,10 +49,10 @@ class User extends Component {
     return (
       <div className="user-authentication">
         <div className="button-signin">
-          <button type="button" className="btn btn-primary" onClick={(e) => this.handleSignIn(e)}>Sign in</button>
+          <button type="button" className="btn btn-primary" onClick={(e) => this.signIn(e)}>Sign in</button>
         </div>
         <div className="button-signout">
-          <button type="button" className="btn btn-danger" onClick={(e) => this.handleSignOut(e)}>Sign out</button>
+          <button type="button" className="btn btn-danger" onClick={(e) => this.signOut(e)}>Sign out</button>
         </div>
         <div className="display-username">
           { this.props.activeUser ? this.props.activeUser.displayName : 'Guest' }

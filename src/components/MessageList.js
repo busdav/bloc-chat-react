@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'moment';
 
 class MessageList extends Component {
 
@@ -8,6 +9,7 @@ class MessageList extends Component {
     this.state = {
       allMessages: [],
       displayedMessages: [],
+      content: "",
     }
 
     this.messagesRef = this.props.firebase.database().ref('messages');
@@ -31,7 +33,46 @@ class MessageList extends Component {
     this.setState({ displayedMessages: this.state.allMessages.filter( message => message.roomId === activeRoom.key ) });
   }
 
+  handleContentChange(e) {
+    e.preventDefault();
+    const newContent = e.target.value;
+    this.setState({ content: newContent });
+  }
+
+  validateContent(str) {
+    const content = str || this.state.content;
+    const contentLength = content.trim().length;
+    if (contentLength > 1 ) { return true; }
+    else { return false; }
+  }
+
+  createMessage(content) {
+    if (this.validateContent(content)) {
+      this.messagesRef.push({ 
+        content: this.state.content,
+        sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
+        username: this.props.activeUser ? this.props.activeUser.displayName : 'Guest',
+        roomId: this.props.activeRoom.key,
+      });
+      this.setState({ content: "" });
+    }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.createMessage(this.state.content);
+ }
+
   render() {
+
+    const messageForm = (
+      <form className="form-inline my-2 my-lg-0" onSubmit={(e) => this.handleSubmit(e)}>
+        <div className="form-group">
+          <input type="text" className="form-control mr-sm-2" name="name" value={this.state.content} placeholder="New Message" onChange={(e) => this.handleContentChange(e)} />
+        </div>
+        <button type="submit" className="btn btn-outline-primary my-2 my-sm-0">Send</button>
+      </form>
+    );
 
     return (
       <main id="messages-component">
@@ -42,12 +83,18 @@ class MessageList extends Component {
               <div className="username">
                  { message.username }
               </div>
+              <div className="sentAt">
+                { Moment(message.sentAt).format('MMMM Do YYYY, h:mm:ss a') }
+              </div>
               <div className="content">
                  { message.content }
               </div>
             </li>
           )}
         </ul>
+        <div className="message-form">
+          {messageForm}
+        </div>
       </main>
     );
   }
